@@ -157,7 +157,9 @@ public class Wiimote
 
     private void RespondIdentifyWiiMotionPlus(byte[] data)
     {
-        if (data.Length != ID_InactiveMotionPlus.Length)
+            Debug.Log("Aii.");
+
+            if (data.Length != ID_InactiveMotionPlus.Length)
         {
             _wmp_attached = false;
             return;
@@ -196,6 +198,7 @@ public class Wiimote
 
     private void RespondIdentifyExtension(byte[] data)
     {
+            
         if (data.Length != 6)
             return;
 
@@ -392,7 +395,7 @@ public class Wiimote
     /// \return If the activation request was successfully sent to the Wii Remote.
     ///
     /// If there is no extension connected, undefined behavior may occur on the Wii Remote.
-    private bool ActivateExtension()
+    public bool ActivateExtension()
     {
         if (!Status.ext_connected)
             Debug.LogWarning("There is a request to activate an Extension controller even though it has not been confirmed to exist!  Trying anyway.");

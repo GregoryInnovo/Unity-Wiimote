@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+using System.Diagnostics;
 using WiimoteApi.Util;
 
 namespace WiimoteApi {
@@ -52,7 +55,10 @@ namespace WiimoteApi {
 
             _c = (data[5] & 0x02) != 0x02;
             _z = (data[5] & 0x01) != 0x01;
+
+            UnityEngine.Debug.Log("Esta conectado el nucjchucks.");
             return true;
+            
         }
 
         /// Returns a size 2 [X, Y] array of the analog stick's position, in the range

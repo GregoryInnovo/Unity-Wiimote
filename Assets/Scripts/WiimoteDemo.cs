@@ -147,12 +147,36 @@ public class WiimoteDemo : MonoBehaviour {
         if (GUILayout.Button("Request Identify WMP"))
             wiimote.RequestIdentifyWiiMotionPlus();
         if ((wiimote.wmp_attached || wiimote.Type == WiimoteType.PROCONTROLLER) && GUILayout.Button("Activate WMP"))
+        {
             wiimote.ActivateWiiMotionPlus();
+            
+        }
+           
         if ((wiimote.current_ext == ExtensionController.MOTIONPLUS ||
             wiimote.current_ext == ExtensionController.MOTIONPLUS_CLASSIC ||
             wiimote.current_ext == ExtensionController.MOTIONPLUS_NUNCHUCK) && GUILayout.Button("Deactivate WMP"))
+        {
             wiimote.DeactivateWiiMotionPlus();
+            //OnApplicationQuit();
 
+
+            //WiimoteManager.Cleanup(wiimote);
+            /*wiimote = null;
+            WiimoteManager.FindWiimotes();*/
+
+
+            /* Debug.Log("entre1");
+
+             NunchuckData data = wiimote.Nunchuck;
+             GUILayout.Label("Stick: " + data.stick[0] + ", " + data.stick[1]);
+             GUILayout.Label("C: " + data.c);
+             GUILayout.Label("Z: " + data.z);*/
+
+
+
+
+        }
+        Debug.Log("entre2");
         GUILayout.Label("Calibrate Accelerometer");
         GUILayout.BeginHorizontal();
         for (int x = 0; x < 3; x++)
@@ -183,6 +207,7 @@ public class WiimoteDemo : MonoBehaviour {
             GUIStyle bold = new GUIStyle(GUI.skin.button);
             bold.fontStyle = FontStyle.Bold;
             if (wiimote.current_ext == ExtensionController.NUNCHUCK) {
+                Debug.Log(wiimote.current_ext);
                 GUILayout.Label("Nunchuck:", bold);
                 NunchuckData data = wiimote.Nunchuck;
                 GUILayout.Label("Stick: " + data.stick[0] + ", " + data.stick[1]);
@@ -213,6 +238,7 @@ public class WiimoteDemo : MonoBehaviour {
             }
             else if (wiimote.current_ext == ExtensionController.MOTIONPLUS)
             {
+                Debug.Log(wiimote.current_ext);
                 GUILayout.Label("Wii Motion Plus:", bold);
                 MotionPlusData data = wiimote.MotionPlus;
                 GUILayout.Label("Pitch Speed: " + data.PitchSpeed);
@@ -221,6 +247,12 @@ public class WiimoteDemo : MonoBehaviour {
                 GUILayout.Label("Pitch Slow: " + data.PitchSlow);
                 GUILayout.Label("Yaw Slow: " + data.YawSlow);
                 GUILayout.Label("Roll Slow: " + data.RollSlow);
+
+
+
+
+
+
                 if (GUILayout.Button("Zero Out WMP"))
                 {
                     data.SetZeroValues();
