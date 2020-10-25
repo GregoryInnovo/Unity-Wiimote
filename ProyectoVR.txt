@@ -1,0 +1,1 @@
+Se implementará ilustrar con un control un canvas y guardar la imagen
