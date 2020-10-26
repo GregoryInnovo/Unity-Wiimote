@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+
 using UnityEngine.UI;
 using System.Collections;
 using System.Text;
 using System;
 using WiimoteApi;
+using System.Diagnostics;
 
 public class WiimoteDemo : MonoBehaviour {
 
@@ -11,6 +13,14 @@ public class WiimoteDemo : MonoBehaviour {
     public RectTransform[] ir_dots;
     public RectTransform[] ir_bb;
     public RectTransform ir_pointer;
+
+    public GameObject controlWii;
+
+    public bool rex;
+    public bool butZ, butC;
+    public int num;
+    public bool calib;
+    public float numUp = 0;
 
     private Quaternion initial_rotation;
 
@@ -21,10 +31,16 @@ public class WiimoteDemo : MonoBehaviour {
     private Vector3 wmpOffset = Vector3.zero;
 
     void Start() {
+        rex = true;
+        butZ = true;
+        butC = true;
+        num = 0;
+        calib = true;
         initial_rotation = model.rot.localRotation;
     }
 
 	void Update () {
+        numUp = 0.1f;
         if (!WiimoteManager.HasWiimote()) { return; }
 
         wiimote = WiimoteManager.Wiimotes[0];
@@ -56,10 +72,74 @@ public class WiimoteDemo : MonoBehaviour {
         model.minus.enabled = wiimote.Button.minus;
         model.home.enabled = wiimote.Button.home;
 
-        if (wiimote.current_ext != ExtensionController.MOTIONPLUS)
-            model.rot.localRotation = initial_rotation;
 
-        if (ir_dots.Length < 4) return;
+        if (wiimote.Button.a)
+        {
+            UnityEngine.Debug.Log("El valor de rex es: " + rex);
+        }
+
+
+        //Hace funcionar el nunchuck y el home para reiniciar
+        if (wiimote.Button.one)
+        {
+
+            /*if (num!=0){
+                try { 
+                    wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+                }catch{
+                    UnityEngine.Debug.Log("Error");
+                }*/
+                wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+                num = 0;
+                rex = true;
+                butZ = true;
+                butC = true;
+                calib = true;
+                wmpOffset = Vector3.zero;
+    
+            
+
+
+
+        }
+
+        //Calibra el control
+        if (wiimote.Button.two && calib)
+        {
+            
+            //UnityEngine.Debug.Log(wiimote.current_ext);
+
+            
+            MotionPlusData data = wiimote.MotionPlus;
+            
+            data.SetZeroValues();
+            model.rot.rotation = Quaternion.FromToRotation(model.rot.rotation * GetAccelVector(), Vector3.up) * model.rot.rotation;
+            model.rot.rotation = Quaternion.FromToRotation(model.rot.forward, Vector3.forward) * model.rot.rotation;
+            
+            wmpOffset = Vector3.zero;
+            calib = false;
+            
+
+        }
+
+        //UnityEngine.Debug.Log("Se oprimio A es: " + wiimote.Button.a);
+
+        //Recargar el control
+        if (wiimote.Button.home && rex)
+        {
+            rex = false;
+            OnApplicationQuit();
+            //UnityEngine.Debug.Log("?????????");
+            WiimoteManager.FindWiimotes();
+            num = 1;
+        }
+
+
+        try
+        {
+            if (wiimote.current_ext != ExtensionController.MOTIONPLUS)
+                        model.rot.localRotation = initial_rotation;        
+            if (ir_dots.Length < 4) return;
 
         float[,] ir = wiimote.Ir.GetProbableSensorBarIR();
         for (int i = 0; i < 2; i++)
@@ -89,6 +169,23 @@ public class WiimoteDemo : MonoBehaviour {
         float[] pointer = wiimote.Ir.GetPointingPosition();
         ir_pointer.anchorMin = new Vector2(pointer[0], pointer[1]);
         ir_pointer.anchorMax = new Vector2(pointer[0], pointer[1]);
+        }
+        catch
+        {
+            UnityEngine.Debug.Log("Dio algo");
+        }
+
+        /*if (num!=0)
+        {
+            try { wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+            }
+            catch
+            {
+                UnityEngine.Debug.Log("Error");
+            }
+            num = 0;
+        }*/
+
 	}
 
     void OnGUI()
@@ -102,10 +199,11 @@ public class WiimoteDemo : MonoBehaviour {
 
         if (GUILayout.Button("Cleanup"))
         {
+            UnityEngine.Debug.Log("Reseteo");
             WiimoteManager.Cleanup(wiimote);
             wiimote = null;
         }
-
+        
         if (wiimote == null)
             return;
 
@@ -176,7 +274,7 @@ public class WiimoteDemo : MonoBehaviour {
 
 
         }
-        Debug.Log("entre2");
+        //UnityEngine.Debug.Log("entre2");
         GUILayout.Label("Calibrate Accelerometer");
         GUILayout.BeginHorizontal();
         for (int x = 0; x < 3; x++)
@@ -198,7 +296,7 @@ public class WiimoteDemo : MonoBehaviour {
                 }
                 str.Append("\n");
             }
-            Debug.Log(str.ToString());
+            UnityEngine.Debug.Log(str.ToString());
         }
 
         if (wiimote != null && wiimote.current_ext != ExtensionController.NONE)
@@ -207,12 +305,43 @@ public class WiimoteDemo : MonoBehaviour {
             GUIStyle bold = new GUIStyle(GUI.skin.button);
             bold.fontStyle = FontStyle.Bold;
             if (wiimote.current_ext == ExtensionController.NUNCHUCK) {
-                Debug.Log(wiimote.current_ext);
+                UnityEngine.Debug.Log(wiimote.current_ext);
                 GUILayout.Label("Nunchuck:", bold);
                 NunchuckData data = wiimote.Nunchuck;
                 GUILayout.Label("Stick: " + data.stick[0] + ", " + data.stick[1]);
                 GUILayout.Label("C: " + data.c);
                 GUILayout.Label("Z: " + data.z);
+
+                if (data.stick[0] > 120 && data.stick[0] < 220 && data.stick[1] > 70 && data.stick[1] < 210)
+                {
+                    controlWii.transform.position = new Vector3(controlWii.transform.position.x + numUp, 0f, controlWii.transform.position.z);
+                }
+                if (data.stick[0] > 20 && data.stick[0] < 120 && data.stick[1] > 63 && data.stick[1] < 209)
+                {
+                    controlWii.transform.position = new Vector3(controlWii.transform.position.x - numUp, 0f, controlWii.transform.position.z);
+                }
+                if (data.stick[0] > 48 && data.stick[0] < 186 && data.stick[1] > 140 && data.stick[1] < 235)
+                {
+                    controlWii.transform.position = new Vector3(controlWii.transform.position.x , 0f, controlWii.transform.position.z + numUp);
+                }
+                if (data.stick[0] > 50 && data.stick[0] < 192 && data.stick[1] > 30 && data.stick[1] < 140)
+                {
+                    controlWii.transform.position = new Vector3(controlWii.transform.position.x, 0f, controlWii.transform.position.z - numUp);
+                }
+                if (data.z && butZ)
+                {
+                    UnityEngine.Debug.Log("Se oprimio la Z");
+                    butZ = false;
+                    wiimote.RequestIdentifyWiiMotionPlus();
+
+                }
+                if (data.c && butC)
+                {
+                    UnityEngine.Debug.Log("Se oprimio la C");
+                    butC = false;
+                    wiimote.ActivateWiiMotionPlus();
+
+                }
             } else if (wiimote.current_ext == ExtensionController.CLASSIC) {
                 GUILayout.Label("Classic Controller:", bold);
                 ClassicControllerData data = wiimote.ClassicController;
@@ -238,7 +367,7 @@ public class WiimoteDemo : MonoBehaviour {
             }
             else if (wiimote.current_ext == ExtensionController.MOTIONPLUS)
             {
-                Debug.Log(wiimote.current_ext);
+                UnityEngine.Debug.Log(wiimote.current_ext);
                 GUILayout.Label("Wii Motion Plus:", bold);
                 MotionPlusData data = wiimote.MotionPlus;
                 GUILayout.Label("Pitch Speed: " + data.PitchSpeed);
@@ -251,7 +380,7 @@ public class WiimoteDemo : MonoBehaviour {
 
 
 
-
+                
 
                 if (GUILayout.Button("Zero Out WMP"))
                 {
