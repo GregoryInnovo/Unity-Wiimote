@@ -56,7 +56,7 @@ public class Camara : MonoBehaviour
         _animator.SetBool("Jump", jump);
 
         //Con los Inputs se toma la direccion del mouse dependiendo de su orientacion
-        h = velocidadHorizontal * Input.GetAxis("Mouse X");
+        //h = velocidadHorizontal * Input.GetAxis("Mouse X");
         v = velocidadVertical * Input.GetAxis("Mouse Y");
 
         transform.Rotate(0, h, 0);
@@ -77,14 +77,14 @@ public class Camara : MonoBehaviour
             //Moverse(new Vector3(-velocidad, 0, 0));
             //Animar();
 
-            transform.Rotate(0, horizontal_speed, 0);
+            transform.Rotate(0, -horizontal_speed, 0);
 
         }
         else if (right)
         {
             //Moverse(new Vector3(velocidad, 0, 0));
             //Animar();
-            transform.Rotate(0, -horizontal_speed, 0);
+            transform.Rotate(0, horizontal_speed, 0);
         }
         else
         {
