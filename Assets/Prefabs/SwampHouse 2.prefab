@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1481857186031314}
+  m_IsPrefabParent: 1
+--- !u!1 &1481857186031314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4754607153974426}
+  - component: {fileID: 33343453431074036}
+  - component: {fileID: 23072791649881684}
+  - component: {fileID: 64763358977404940}
+  m_Layer: 0
+  m_Name: SwampHouse 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4754607153974426
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481857186031314}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 3.2871895, y: 0.41935372, z: 0.025859177}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23072791649881684
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481857186031314}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 28f75a6df23b67942bc20082ebce6955, type: 2}
+  - {fileID: 2100000, guid: 7128d02b3a000d14fb25f8605f889b23, type: 2}
+  - {fileID: 2100000, guid: 2b98517fe119ca647ba13b3e0e7175a8, type: 2}
+  - {fileID: 2100000, guid: 964cbb1fd587c334e82a205911d7a74b, type: 2}
+  - {fileID: 2100000, guid: 56150a2091eb60f4480f94c1d15b2a6b, type: 2}
+  - {fileID: 2100000, guid: bc96f4e13b5d09547baf280f33357926, type: 2}
+  - {fileID: 2100000, guid: 1aa55182167c54f4bad759c87d7083ea, type: 2}
+  - {fileID: 2100000, guid: 81af3989b28f1c74487e89c25a11378e, type: 2}
+  - {fileID: 2100000, guid: 5e7d5f3c652456f4d864ff964f6a8783, type: 2}
+  - {fileID: 2100000, guid: 67f32a368730a484d89cfc44a6359fe8, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &33343453431074036
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481857186031314}
+  m_Mesh: {fileID: 4300000, guid: 83b58eaa1306ebf49ae96127bf0427a6, type: 3}
+--- !u!64 &64763358977404940
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481857186031314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 83b58eaa1306ebf49ae96127bf0427a6, type: 3}
