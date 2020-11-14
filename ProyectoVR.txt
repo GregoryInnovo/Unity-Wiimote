@@ -1,1 +1,3 @@
-Se implementará ilustrar con un control un canvas y guardar la imagen
+Este proyecto estará enfocado en realizar una experiencia interactiva 
+donde uno no pueda ver y solo tenga la posibilidad de escuchar y sentir
+para avanzar.
