@@ -1,1 +1,3 @@
-Se implementará ilustrar con un control un canvas y guardar la imagen
+Este proyecto se enfocará en ofrecer una experencia inmersiva
+donde la persona no podrá ver, sino que deberá escuchar y sentir
+lo que le transmita su alrededor para avanzar.
