@@ -26,6 +26,8 @@ public class WiimoteDemo : MonoBehaviour {
 
     private Wiimote wiimote;
 
+    public static WiimoteDemo access;
+
     private Vector2 scrollPosition;
 
     private Vector3 wmpOffset = Vector3.zero;
@@ -39,11 +41,16 @@ public class WiimoteDemo : MonoBehaviour {
     public byte[] vibrar = new byte[] { 0x01 };
     public byte[] novibrar = new byte[] { 0x00 };
 
+
+    public static bool vibrarWii;
+
     public OutputDataType type;
     public byte[] data;
     //public bool RumbleOn;
 
     void Start() {
+
+        vibrarWii = false;
         rex = true;
         butZ = true;
         butC = true;
@@ -53,7 +60,7 @@ public class WiimoteDemo : MonoBehaviour {
         //RumbleOn = fa;
     }
 
-    void Update () {
+    void Update() {
         numUp = 0.1f;
         if (!WiimoteManager.HasWiimote()) { return; }
 
@@ -65,7 +72,7 @@ public class WiimoteDemo : MonoBehaviour {
             ret = wiimote.ReadWiimoteData();
 
             if (ret > 0 && wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                Vector3 offset = new Vector3(  -wiimote.MotionPlus.PitchSpeed,
+                Vector3 offset = new Vector3(-wiimote.MotionPlus.PitchSpeed,
                                                 wiimote.MotionPlus.YawSpeed,
                                                 wiimote.MotionPlus.RollSpeed) / 95f; // Divide by 95Hz (average updates per second from wiimote)
                 wmpOffset += offset;
@@ -94,14 +101,14 @@ public class WiimoteDemo : MonoBehaviour {
         //byte[] final = new byte[data.Length];
         //final[0] = (byte)type;
 
-        
+
         //final[0] = data[0];
 
 
         if (wiimote.Button.a)
         {
             UnityEngine.Debug.Log("El valor de rex es: " + rex);
-            
+
         }
 
         if (wiimote.Button.d_down)
@@ -130,11 +137,8 @@ public class WiimoteDemo : MonoBehaviour {
             //UnityEngine.Debug.Log("Se oprime el boton de la derecha");
             Camara.access.right = true;
 
-            
-            WiimoteManager.FindWiimotes();
-            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
-            Wiimote.RumbleOn = true;
-            UnityEngine.Debug.Log("El numero es: " + numero);
+
+
             //Wiimote.RumbleOn = false;
 
 
@@ -146,21 +150,29 @@ public class WiimoteDemo : MonoBehaviour {
 
         if (wiimote.Button.d_left)
         {
-            
+
             //UnityEngine.Debug.Log("Se oprime el boton de izquierda");
             Camara.access.left = true;
-
-            
-            WiimoteManager.FindWiimotes();
-            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
-            Wiimote.RumbleOn = false;
-            UnityEngine.Debug.Log("El numero es: " + numero);
-
 
         }
         else if (wiimote.Button.d_left != true)
         {
             Camara.access.left = false;
+        }
+
+
+        if (vibrarWii)
+        {
+            WiimoteManager.FindWiimotes();
+            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+            Wiimote.RumbleOn = true;
+            UnityEngine.Debug.Log("El numero es: " + numero);
+        } else if (!vibrarWii)
+        {
+            WiimoteManager.FindWiimotes();
+            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+            Wiimote.RumbleOn = false;
+            UnityEngine.Debug.Log("El numero es: " + numero);
         }
         //Hace funcionar el nunchuck y el home para reiniciar
         if (wiimote.Button.one)

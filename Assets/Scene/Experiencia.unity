@@ -577,7 +577,6 @@ MonoBehaviour:
   novibrar: 00
   type: 18
   data: 
-  RumbleOn: 0
 --- !u!114 &919321086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8658,7 +8657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0846530cc479246931c246e2feeeb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 1638160019154535}
 --- !u!82 &1638160019154535
 AudioSource:
   m_ObjectHideFlags: 0
