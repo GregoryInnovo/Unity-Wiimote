@@ -40,6 +40,7 @@ public class WiimoteManager
         return ret;
     }
 
+     //Tener en cuenta esta funcion
     private static bool _FindWiimotes(WiimoteType type)
     {
         //if (hidapi_wiimote != IntPtr.Zero)
@@ -140,6 +141,7 @@ public class WiimoteManager
     ///          Use the functionality provided by Wiimote instead.
     public static int SendRaw(IntPtr hidapi_wiimote, byte[] data)
     {
+        Debug.Log("Info1: " + hidapi_wiimote + " Data: " + data);
         if (hidapi_wiimote == IntPtr.Zero) return -2;
 
         if (WriteQueue == null)

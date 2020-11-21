@@ -572,6 +572,12 @@ MonoBehaviour:
   num: 0
   calib: 0
   numUp: 0
+  numero: 0
+  vibrar: 01
+  novibrar: 00
+  type: 18
+  data: 
+  RumbleOn: 0
 --- !u!114 &919321086
 MonoBehaviour:
   m_ObjectHideFlags: 0

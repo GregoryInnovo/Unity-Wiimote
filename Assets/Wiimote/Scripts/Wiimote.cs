@@ -12,8 +12,9 @@ public class Wiimote
     /// Represents whether or not to turn on rumble when sending reports to
     /// the Wii Remote.  This will only be applied when a data report is sent.
     /// That is, simply setting this flag will not instantly enable rumble.
-    public bool RumbleOn = false;
-
+    //public bool RumbleOn = false;
+    public static bool RumbleOn = false;
+    //public static Wiimote instance; 
     /// Accelerometer data component
     public AccelData     Accel      { get { return _Accel; } }
     private AccelData   _Accel;
@@ -23,6 +24,9 @@ public class Wiimote
     /// the Wiimote.  If no Nunchuck is connected, this is \c null.
     ///
     /// \sa current_ext
+    
+
+
     public NunchuckData Nunchuck {
         get {
             if(current_ext == ExtensionController.NUNCHUCK)
@@ -98,7 +102,7 @@ public class Wiimote
 
     /// A pointer representing HIDApi's low-level device handle to this
     /// Wii Remote.  Use this when interfacing directly with HIDApi.
-    public IntPtr hidapi_handle { get { return _hidapi_handle; } }
+    public  IntPtr hidapi_handle { get { return _hidapi_handle; } }
     private IntPtr _hidapi_handle = IntPtr.Zero;
 
     /// The RAW (unprocessesed) extension data reported by the Wii Remote.  This could
@@ -427,11 +431,18 @@ public class Wiimote
         byte[] final = new byte[data.Length + 1];
         final[0] = (byte)type;
 
+            //UnityEngine.Debug.Log(type);
         for (int x = 0; x < data.Length; x++)
             final[x + 1] = data[x];
 
-        if (RumbleOn)
+        if (RumbleOn){
             final[1] |= 0x01;
+        }
+        
+        /*else{
+            final[1] |= 0x00;
+        }*/
+            
 
         int res = WiimoteManager.SendRaw(hidapi_handle, final);
 
@@ -494,14 +505,14 @@ public class Wiimote
         return first + second; // success
     }
 
-    private int SendSpeakerEnabled(bool enabled)
+    public int SendSpeakerEnabled(bool enabled)
     {
         byte[] mask = new byte[] { (byte)(enabled ? 0x04 : 0x00) };
 
         return SendWithType(OutputDataType.SPEAKER_ENABLE, mask);
     }
 
-    private int SendSpeakerMuted(bool muted)
+    public int SendSpeakerMuted(bool muted)
     {
         byte[] mask = new byte[] { (byte)(muted ? 0x04 : 0x00) };
 

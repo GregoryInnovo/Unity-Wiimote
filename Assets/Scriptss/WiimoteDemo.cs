@@ -30,6 +30,19 @@ public class WiimoteDemo : MonoBehaviour {
 
     private Vector3 wmpOffset = Vector3.zero;
 
+    public int numero;
+
+    /*public IntPtr hidapi_handle { get { return _hidapi_handle; } }
+    private IntPtr _hidapi_handle = IntPtr.Zero;
+    */
+
+    public byte[] vibrar = new byte[] { 0x01 };
+    public byte[] novibrar = new byte[] { 0x00 };
+
+    public OutputDataType type;
+    public byte[] data;
+    //public bool RumbleOn;
+
     void Start() {
         rex = true;
         butZ = true;
@@ -37,9 +50,10 @@ public class WiimoteDemo : MonoBehaviour {
         num = 0;
         calib = true;
         initial_rotation = model.rot.localRotation;
+        //RumbleOn = fa;
     }
 
-	void Update () {
+    void Update () {
         numUp = 0.1f;
         if (!WiimoteManager.HasWiimote()) { return; }
 
@@ -72,6 +86,17 @@ public class WiimoteDemo : MonoBehaviour {
         model.minus.enabled = wiimote.Button.minus;
         model.home.enabled = wiimote.Button.home;
 
+        //wiimote.RumbleOn = false;
+        //Wiimote.instance.RumbleOn = true;
+
+
+
+        //byte[] final = new byte[data.Length];
+        //final[0] = (byte)type;
+
+        
+        //final[0] = data[0];
+
 
         if (wiimote.Button.a)
         {
@@ -101,8 +126,17 @@ public class WiimoteDemo : MonoBehaviour {
 
         if (wiimote.Button.d_right)
         {
+            //RumbleOn = true;
             //UnityEngine.Debug.Log("Se oprime el boton de la derecha");
             Camara.access.right = true;
+
+            
+            WiimoteManager.FindWiimotes();
+            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+            Wiimote.RumbleOn = true;
+            UnityEngine.Debug.Log("El numero es: " + numero);
+            //Wiimote.RumbleOn = false;
+
 
         }
         else if (wiimote.Button.d_right != true)
@@ -112,8 +146,17 @@ public class WiimoteDemo : MonoBehaviour {
 
         if (wiimote.Button.d_left)
         {
+            
             //UnityEngine.Debug.Log("Se oprime el boton de izquierda");
             Camara.access.left = true;
+
+            
+            WiimoteManager.FindWiimotes();
+            wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+            Wiimote.RumbleOn = false;
+            UnityEngine.Debug.Log("El numero es: " + numero);
+
+
         }
         else if (wiimote.Button.d_left != true)
         {
