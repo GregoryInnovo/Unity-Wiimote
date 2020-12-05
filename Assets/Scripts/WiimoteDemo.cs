@@ -46,8 +46,9 @@ public class WiimoteDemo : MonoBehaviour {
 
     public OutputDataType type;
     public byte[] data;
-    //public bool RumbleOn;
+    public bool reset;
 
+    public GameObject playerG;
     void Start() {
 
         vibrarWii = false;
@@ -105,10 +106,25 @@ public class WiimoteDemo : MonoBehaviour {
         //final[0] = data[0];
 
 
-        if (wiimote.Button.a)
+        if (wiimote.Button.a && reset)
         {
-            UnityEngine.Debug.Log("El valor de rex es: " + rex);
+            wmpOffset = Vector3.zero;
+            //UnityEngine.Debug.Log("El valor de rex es: " + rex);
 
+            MotionPlusData data = wiimote.MotionPlus;
+            
+            data.SetZeroValues();
+            model.rot.rotation = Quaternion.FromToRotation(model.rot.rotation * GetAccelVector(), Vector3.up) * model.rot.rotation;
+            model.rot.rotation = Quaternion.FromToRotation(model.rot.forward, Vector3.forward) * model.rot.rotation;
+            playerG.transform.rotation = Quaternion.Euler(0, 0, 0);
+            reset = false;
+
+        }
+
+        if (wiimote.Button.b)
+        {
+            reset = true;
+            playerG.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
         if (wiimote.Button.d_down)
@@ -487,6 +503,7 @@ public class WiimoteDemo : MonoBehaviour {
                     data.SetZeroValues();
                     model.rot.rotation = Quaternion.FromToRotation(model.rot.rotation*GetAccelVector(), Vector3.up) * model.rot.rotation;
                     model.rot.rotation = Quaternion.FromToRotation(model.rot.forward, Vector3.forward) * model.rot.rotation;
+                    playerG.transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
                 if(GUILayout.Button("Reset Offset"))
                     wmpOffset = Vector3.zero;
