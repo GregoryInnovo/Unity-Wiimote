@@ -20,10 +20,12 @@ public class Teleport : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && this.gameObject.name.Equals("RoomTwo"))
         {
             mainPlayer.transform.position = new Vector3(20.59949f, 33.78136f, -264f);
+            GameController.instance.Audio2();
         }
         else if (other.gameObject.CompareTag("Player") && this.gameObject.name.Equals("RoomThree"))
         {
             mainPlayer.transform.position = new Vector3(-4f, 52.1f, 102.5f);
+            GameController.instance.Audio3();
         }
 
     }

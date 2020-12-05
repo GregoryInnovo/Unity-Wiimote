@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public static GameController instance;
+    public AudioSource audioController;
+    public AudioClip audio1, audio2, audio3;
     void Start()
     {
-        
+        instance = this;
+        audioController.clip = audio1;
+        audioController.Play();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void Audio2()
     {
-        
+        audioController.clip = audio2;
+        audioController.Play();
+    }
+
+    public void Audio3()
+    {
+        audioController.clip = audio3;
+        audioController.Play();
     }
 }
